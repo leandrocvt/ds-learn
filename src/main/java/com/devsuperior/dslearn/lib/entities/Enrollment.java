@@ -4,6 +4,9 @@ import com.devsuperior.dslearn.lib.entities.pk.EnrollmentPK;
 import jakarta.persistence.*;
 
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_enrollment")
@@ -20,6 +23,8 @@ public class Enrollment {
     private boolean available;
     private boolean onlyUpdate;
 
+    @ManyToMany(mappedBy = "enrollmentsDone")
+    private Set<Lesson> lessonsDone = new HashSet<>();
 
     public Enrollment() {
     }
@@ -82,5 +87,25 @@ public class Enrollment {
         this.onlyUpdate = onlyUpdate;
     }
 
+    public Set<Lesson> getLessonsDone() {
+        return lessonsDone;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Enrollment other = (Enrollment) obj;
+        return Objects.equals(id, other.id);
+    }
 
 }
